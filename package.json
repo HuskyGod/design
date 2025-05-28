@@ -10,8 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@ant-design/icons-react-native": "^2.3.2",
+    "@ant-design/react-native": "^5.4.1",
+    "@shopify/react-native-skia": "^2.0.1",
     "react": "19.0.0",
-    "react-native": "0.79.2"
+    "react-native": "0.79.2",
+    "react-native-gesture-handler": "^2.25.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
