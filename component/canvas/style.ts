@@ -6,3 +6,7 @@ export default StyleSheet.create({
         width: '100%'
     },
 });
+
+// define your styles
+export const backgroundStyles = StyleSheet.create({
+});
