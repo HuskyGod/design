@@ -3,15 +3,21 @@ import React from 'react';
 import { View } from 'react-native';
 import { useCanvas } from './hook/canvas';
 import ConfigList from './component/config';
+import GestureView from './component/gesture';
+import { FiberProvider } from 'its-fine';
 
 // create a component
 const MyComponent = () => {
     const { element } = useCanvas();
     return (
-        <View style={{ flex: 1, flexDirection: 'column' }}>
-            {element}
-            <ConfigList />
-        </View>
+        <FiberProvider>
+            <GestureView>
+                <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
+                    {element}
+                    <ConfigList />
+                </View>
+            </GestureView>
+        </FiberProvider>
     );
 };
 
