@@ -15,7 +15,10 @@
     "@shopify/react-native-skia": "^2.0.1",
     "react": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-gesture-handler": "^2.25.0"
+    "react-native-color": "^0.0.10",
+    "react-native-gesture-handler": "^2.25.0",
+    "react-native-liquid-view": "^0.1.0",
+    "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

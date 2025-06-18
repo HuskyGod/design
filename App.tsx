@@ -6,11 +6,11 @@ import ConfigList from './component/config';
 
 // create a component
 const MyComponent = () => {
-    const { element } = useCanvas();
+    const { element, option } = useCanvas();
     return (
         <View style={{ flex: 1, flexDirection: 'column' }}>
             {element}
-            <ConfigList />
+            <ConfigList option={option} />
         </View>
     );
 };

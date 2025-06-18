@@ -1,26 +1,32 @@
 //import liraries
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styles from './style';
-import ModalBox from './modalBox';
-import { useState } from 'react';
+import ColorBox from '../colorBox';
+import { useModal } from '../../hook/modal';
+import { CanvasOption } from '../../hook/canvas';
+
+interface Props {
+    option: CanvasOption
+}
 
 // create a component
-const ConfigList = () => {
-    const [visible, setVisible] = useState(false);
-    
-    const onVisible = (value: boolean) => {
-        setVisible(value);
+const ConfigList: React.FC<Props> = ({ option }) => {
+    const modal = useModal();
+
+    const onSelect = (color: string) => {
+        option.setColor(color);
+        modal.onClose();
     }
 
     return (
         <View style={styles.container}>
             <ScrollView horizontal style={styles.scroll}>
-                <TouchableOpacity style={styles.box} onPressOut={() => onVisible(true)}>
+                <TouchableOpacity style={styles.box} onPressOut={() => modal.onShow()}>
                     <View style={styles.icon} />
                     <Text style={styles.text}>111</Text>
                 </TouchableOpacity>
             </ScrollView>
-            <ModalBox visible={visible} onVisible={onVisible} />
+            <ColorBox onSelect={onSelect} modal={modal} />
         </View>
     );
 };

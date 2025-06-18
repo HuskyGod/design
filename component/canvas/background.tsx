@@ -31,7 +31,6 @@ const CanvasBackgound: React.FC<Props> = ({ width, height, size }) => {
     }, [widthSize, size]);
 
     if (!width || !height) return <Group></Group>;
-
     return (
         <Group>
             {/* x轴tab */}
