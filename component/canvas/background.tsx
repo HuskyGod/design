@@ -1,6 +1,7 @@
 import { Group, Line, Rect, Text, vec } from "@shopify/react-native-skia";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { createXLable, createXLine, createYLable, createYLine, LineOption } from "./utils";
+import context from "../gesture/context";
 
 const color = "lightblue"
 
@@ -12,23 +13,24 @@ interface Props {
 
 // create a component
 const CanvasBackgound: React.FC<Props> = ({ width, height, size }) => {
+    const contextValue = useContext(context);
     const widthSize = width - size;
     const heightSize = height - size;
     const xLine = useMemo<LineOption[]>(() => {
-        return createXLine(size, widthSize, heightSize);
-    }, [widthSize, heightSize, size]);
+        return createXLine(size, widthSize, heightSize, contextValue.translationY);
+    }, [widthSize, heightSize, size, contextValue.translationY]);
 
     const yLine = useMemo<LineOption[]>(() => {
-        return createYLine(size, heightSize, widthSize);
-    }, [widthSize, heightSize, size]);
+        return createYLine(size, heightSize, widthSize, contextValue.translationX);
+    }, [widthSize, heightSize, size, contextValue.translationX]);
 
     const xLable = useMemo<LineOption[]>(() => {
-        return createXLable(size, heightSize);
-    }, [heightSize, size]);
+        return createXLable(size, heightSize, contextValue.translationY);
+    }, [heightSize, size, contextValue.translationY]);
 
     const yLable = useMemo<LineOption[]>(() => {
-        return createYLable(size, widthSize);
-    }, [widthSize, size]);
+        return createYLable(size, widthSize, contextValue.translationX);
+    }, [widthSize, size, contextValue.translationX]);
 
     if (!width || !height) return <Group></Group>;
     return (
@@ -123,6 +125,8 @@ const CanvasBackgound: React.FC<Props> = ({ width, height, size }) => {
                     ))}
                 </Group>
             </Group>
+            {/* 放个正方形防止溢出显示 */}
+            <Rect x={0} y={0} width={size - 1} height={size - 1} color={color} />
         </Group>
     );
 };

@@ -13,6 +13,7 @@
     "@ant-design/icons-react-native": "^2.3.2",
     "@ant-design/react-native": "^5.4.1",
     "@shopify/react-native-skia": "^2.0.1",
+    "its-fine": "^2.0.0",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "react-native-color": "^0.0.10",
