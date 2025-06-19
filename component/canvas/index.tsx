@@ -6,7 +6,7 @@ import CanvasBackgound from './background';
 import { LayoutChangeEvent } from 'react-native';
 import { CanvasType } from '../../hook/canvas';
 import { useContextBridge } from 'its-fine';
-import ItemBox from './Item';
+import { ListBox } from './Item';
 
 interface Prop {
     list: CanvasType[]
@@ -24,13 +24,10 @@ const CanvasScreen: React.FC<Prop> = ({ list }) => {
         <Canvas style={style.container} onLayout={onLayout}>
             <ContextBridge>
                 <CanvasBackgound width={size.width} height={size.height} size={sizeNumber} />
+                <Group transform={[{ translateX: sizeNumber }, { translateY: sizeNumber }]}>
+                    <ListBox list={list} />
+                </Group>
             </ContextBridge>
-            <Group transform={[{ translateX: sizeNumber }, { translateY: sizeNumber }]}>
-                {
-                    list.map((item) => <ItemBox key={item.key} option={item} />)
-                }
-            </Group>
-            
         </Canvas>
     );
 };
