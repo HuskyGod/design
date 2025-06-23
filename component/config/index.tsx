@@ -6,7 +6,7 @@ import { useModal } from '../../hook/modal';
 import { CanvasOption } from '../../hook/canvas';
 
 interface Props {
-    option: CanvasOption
+    option: CanvasOption,
 }
 
 // create a component
@@ -16,7 +16,7 @@ const ConfigList: React.FC<Props> = ({ option }) => {
     const onSelect = (color: string) => {
         option.setColor(color);
         modal.onClose();
-    }
+    };
 
     return (
         <View style={styles.container}>

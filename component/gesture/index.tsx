@@ -1,21 +1,36 @@
 //import liraries
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import styles from './style';
 import { Provider } from './context';
+import { CanvasOption } from '../../hook/canvas';
+import { getBoundNumber } from '../../hook/util';
 
 // create a component
-const GestureView: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }> = ({ children, option }) => {
     const [translationX, setTranslationX] = useState(0);
     const [translationY, setTranslationY] = useState(0);
     const [translationOffsetX, setTranslationOffsetX] = useState(0);
     const [translationOffsetY, setTranslationOffsetY] = useState(0);
     const panGesture = Gesture.Pan().minDistance(1);
+    const isObject = useRef(false);
 
-    panGesture.onUpdate((e) => {
+    panGesture.onBegin((e) => {
+        const check = option.checkBound(e);
+        isObject.current = check;
+    }).onUpdate((e) => {
+        if (isObject.current) {
+            console.log('111', e.translationX, e.translationY);
+            option.setActiveLocation({ x: e.translationX, y: e.translationY });
+            return false;
+        }
         setTranslationX((-e.translationX));
         setTranslationY((-e.translationY));
     }).onEnd(() => {
+        if (isObject.current) {
+            option.cleanInitLocation();
+            return false;
+        }
         setTranslationOffsetX((state => (state + (translationX))));
         setTranslationOffsetY((state => (state + (translationY))));
         // setTranslationOffsetX((state => state + (translationX)));
@@ -24,7 +39,7 @@ const GestureView: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         setTranslationY(0);
     }).runOnJS(true);
     return (
-        <Provider value={{ translationX: Math.max(translationOffsetX + translationX, 0), translationY: Math.max(translationOffsetY + translationY, 0) }}>
+        <Provider value={{ translationX: getBoundNumber(translationOffsetX + translationX), translationY: getBoundNumber(translationOffsetY + translationY) }}>
             <GestureHandlerRootView style={styles.container}>
                 <GestureDetector gesture={panGesture}>
                     {children}

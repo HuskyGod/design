@@ -7,25 +7,31 @@ import { LayoutChangeEvent } from 'react-native';
 import { CanvasType } from '../../hook/canvas';
 import { useContextBridge } from 'its-fine';
 import { ListBox } from './Item';
+import BoundActive from './boundActive';
 
 interface Prop {
-    list: CanvasType[]
+    list: CanvasType[],
+    active: null | CanvasType
 }
 
 // create a component
-const CanvasScreen: React.FC<Prop> = ({ list }) => {
+const CanvasScreen: React.FC<Prop> = ({ list, active }) => {
     const ContextBridge = useContextBridge();
     const sizeNumber = 25;
-    const [size, setSize] = useState({ x: 0, y: 0, width: 0, height: 0 })
+    const [size, setSize] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const onLayout = useCallback((e: LayoutChangeEvent) => {
-        setSize(e.nativeEvent.layout)
+        setSize(e.nativeEvent.layout);
     }, []);
+    console.log('active', active);
     return (
         <Canvas style={style.container} onLayout={onLayout}>
             <ContextBridge>
                 <CanvasBackgound width={size.width} height={size.height} size={sizeNumber} />
                 <Group transform={[{ translateX: sizeNumber }, { translateY: sizeNumber }]}>
                     <ListBox list={list} />
+                    { active ? (
+                        <BoundActive active={active} />
+                    ) : null }
                 </Group>
             </ContextBridge>
         </Canvas>

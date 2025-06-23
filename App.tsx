@@ -11,12 +11,16 @@ const MyComponent = () => {
     const { element, option } = useCanvas();
     return (
         <FiberProvider>
-            <GestureView>
-                <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
-                    {element}
-                    <ConfigList option={option} />
+            <View style={{ flex: 1, flexDirection: 'column' }}>
+                <View style={{ flex: 1 }}>
+                    <GestureView option={option}>
+                        <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
+                            {element}
+                        </View>
+                    </GestureView>
                 </View>
-            </GestureView>
+                <ConfigList option={option} />
+            </View>
         </FiberProvider>
     );
 };
