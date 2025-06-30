@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import CanvasScreen from '../component/canvas';
-import { checkBound, createCanvasElement, getCanvaItemMoveInfo, MoveEvent } from './util';
+import { checkBound, createCanvasElement, getCanvaItemMoveInfo, getEvent, MoveEvent } from './util';
 export type CanvasElementType = 'rect'
 export interface CanvasType {
     active: boolean,
@@ -55,7 +55,8 @@ export const useCanvas = () => {
         });
     };
     // 检查边界
-    const onCheck = (e: MoveEvent) => {
+    const onCheck = (event: MoveEvent) => {
+        const e = getEvent(event);
         const data = checkBound(e, list);
         if (data) {
             const [object, findIndex] = data;

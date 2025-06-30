@@ -8,6 +8,7 @@ import { CanvasType } from '../../hook/canvas';
 import { useContextBridge } from 'its-fine';
 import { ListBox } from './Item';
 import BoundActive from './boundActive';
+import { ruleSize } from '../../hook/util';
 
 interface Prop {
     list: CanvasType[],
@@ -17,7 +18,7 @@ interface Prop {
 // create a component
 const CanvasScreen: React.FC<Prop> = ({ list, active }) => {
     const ContextBridge = useContextBridge();
-    const sizeNumber = 25;
+    const sizeNumber = ruleSize;
     const [size, setSize] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const onLayout = useCallback((e: LayoutChangeEvent) => {
         setSize(e.nativeEvent.layout);
