@@ -9,6 +9,7 @@ import { FiberProvider } from 'its-fine';
 // create a component
 const MyComponent = () => {
     const { element, option } = useCanvas();
+
     return (
         <FiberProvider>
             <View style={{ flex: 1, flexDirection: 'column' }}>

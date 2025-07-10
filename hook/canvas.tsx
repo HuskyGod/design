@@ -67,7 +67,6 @@ export const useCanvas = () => {
         setList((state) => state.map((item) => ({ ...item, active: false })));
         return false;
     };
-    console.log('activeObject2', activeObject);
     const option = {
         setColor,
         checkBound: onCheck,

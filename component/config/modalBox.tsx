@@ -23,7 +23,7 @@ const ModalBox: React.FC<Prop> = (prop) => {
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={modalStyle.configListBox}>
-                    <TouchableOpacity style={[{ width, height: width }, modalStyle.configItem]}></TouchableOpacity>
+                    <TouchableOpacity style={[{ width, height: width }, modalStyle.configItem]} />
                 </ScrollView>
             </View>
         </Modal>
