@@ -27,11 +27,13 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
     const [height, setHeight] = useState((active || {}).size?.height || 0);
     const [radiuSwich, setRadiuSwich] = useState((active || {}).round?.show || false);
     const [radiuValue, setRadiuValue] = useState((active || {}).round?.value || 0);
+    const [borderSwich, setBorderSwich] = useState((active || {}).border?.show || false);
+    const [borderValue, setBorderValue] = useState((active || {}).border?.value || 0);
 
     // 是否可设置圆角
-    const beAbleToSetRound = useMemo(() => {
-        return ['rect'].includes(active?.type || '');
-    }, [active]);
+    const beAbleToSetRound = useMemo(() => ['rect'].includes(active?.type || ''), [active]);
+    // 是否可设置圆角
+    const beAbleToSetBorDer = useMemo(() => ['rect'].includes(active?.type || ''), [active]);
 
     useEffect(() => {
         if (modal.open) {
@@ -39,14 +41,17 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
             setHeight((active || {}).size?.height || 0);
             setRadiuSwich((active || {}).round?.show || false);
             setRadiuValue((active || {}).round?.value || 0);
+            setBorderSwich((active || {}).border?.show || false);
+            setBorderValue((active || {}).border?.value || 0);
         }
     }, [modal.open, active]);
 
     const onFinish = useCallback(() => {
         option.setWidthAndHeight({ width, height });
         option.setRound({ show: radiuSwich, value: radiuValue });
+        option.setBorder({ show: borderSwich, value: borderValue });
         modal.onClose();
-    }, [option, width, height, modal, radiuSwich, radiuValue]);
+    }, [option, width, height, modal, radiuSwich, radiuValue, borderSwich, borderValue]);
 
     return (
         <ModalBox
@@ -92,7 +97,6 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
                         <Switch
                             checkedChildren="开启"
                             unCheckedChildren="关闭"
-                            defaultChecked={radiuSwich}
                             checked={radiuSwich}
                             onChange={() => setRadiuSwich(!radiuSwich)}
                         />
@@ -101,6 +105,29 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
                         radiuSwich && (
                             <FlexItem style={{ marginLeft: 20 }}>
                                 <Stepper value={radiuValue} onChange={setRadiuValue} style={{ width: '50%' }} />
+                            </FlexItem>
+                        )
+                    }
+                </Flex>
+            </View>
+          )}
+          {/* 边框 */}
+          {beAbleToSetBorDer && (
+            <View style={[styles.titleBox, styles.round]} >
+                <Flex align="center">
+                    <View><Text style={styles.title}>边框</Text></View>
+                    <View style={{ marginLeft: 20 }}>
+                        <Switch
+                            checkedChildren="开启"
+                            unCheckedChildren="关闭"
+                            checked={borderSwich}
+                            onChange={() => setBorderSwich(!borderSwich)}
+                        />
+                    </View>
+                    {
+                        borderSwich && (
+                            <FlexItem style={{ marginLeft: 20 }}>
+                                <Stepper value={borderValue} onChange={setBorderValue} style={{ width: '50%' }} />
                             </FlexItem>
                         )
                     }

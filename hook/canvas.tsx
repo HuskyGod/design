@@ -10,6 +10,7 @@ export interface CanvasType {
     size: { width: number, height: number, x: number, y: number },
     bound: { x1: number, x2: number, y1: number, y2: number }
     round?: { show: boolean, value: number }
+    border?: { show: boolean, value: number }
 }
 
 
@@ -19,6 +20,7 @@ export const useCanvas = () => {
     const [list, setList] = useState<CanvasType[]>([createCanvasElement()]);
     const initXAndY = React.useRef<[number, number]>([0, 0]);
 
+    // 设置当前选中
     const setActiveOption: (fn: (item: CanvasType) => CanvasType) => void = (fn) => {
         setList((state) => {
             return state.map((item) => {
@@ -90,8 +92,18 @@ export const useCanvas = () => {
             };
         });
     };
+    // 设置边框
+    const setBorder = (option: { show: boolean, value: number }) => {
+        setActiveOption((item) => {
+            return {
+                ...item,
+                border: option,
+            };
+        });
+    };
 
     const option = {
+        setBorder,
         setRound,
         setColor,
         checkBound: onCheck,

@@ -14,7 +14,7 @@ const RectItem: React.FC<{ option: CanvasType }> = ({ option }) => {
     };
     return (
         <RoundedRect {...propValue}>
-            <Paint color="blue" strokeWidth={5} style="stroke" />
+            { option.border?.show ? <Paint color="blue" strokeWidth={option.border?.value} style="stroke" /> : null }
         </RoundedRect>
     );
 };
