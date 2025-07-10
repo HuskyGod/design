@@ -1,5 +1,5 @@
 //import liraries
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useModal } from '../../hook/modal';
 import { LiquidGlassView } from 'react-native-liquid-view';
@@ -32,10 +32,16 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
         }
     }, [modal.open, active]);
 
+    const onFinish = useCallback(() => {
+        option.setWidthAndHeight({ width, height });
+        modal.onClose();
+    }, [option, width, height, modal]);
+
     return (
         <ModalBox
             modal={modal}
             visible={modal.open}
+            onFinish={onFinish}
         >
             <View style={styles.titleBox}><Text style={styles.title}>颜色</Text></View>
             <View style={styles.colorBox}>

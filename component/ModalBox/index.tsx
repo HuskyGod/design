@@ -9,6 +9,7 @@ import FlexItem from '@ant-design/react-native/lib/flex/FlexItem';
 
 interface MyModalProps extends ModalProps {
     modal: ReturnType<typeof useModal>,
+    onFinish: () => void
 }
 
 // create a component
@@ -17,8 +18,10 @@ const MyComponent: React.FC<MyModalProps> = (props) => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        setShow(modal.open);
-    }, [modal.open]);
+        if (modal.open !== show) {
+            setShow(modal.open);
+        }
+    }, [modal.open, show]);
 
     return (
         <Modal
@@ -38,7 +41,7 @@ const MyComponent: React.FC<MyModalProps> = (props) => {
                 <View style={style.clone}>
                     <Flex>
                         <FlexItem>
-                            <Button type="primary">确认</Button>
+                            <Button onPress={props.onFinish} type="primary">确认</Button>
                         </FlexItem>
                         <FlexItem style={{ marginLeft: 20 }}>
                             <Button onPress={modal.onClose}>关闭</Button>

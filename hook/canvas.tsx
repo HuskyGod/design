@@ -16,17 +16,10 @@ export type CanvasOption = ReturnType<typeof useCanvas>['option']
 
 export const useCanvas = () => {
     const [list, setList] = useState<CanvasType[]>([createCanvasElement()]);
-    // const [activeObject, setActiveObject] = useState<CanvasType | null>(null);
     const initXAndY = React.useRef<[number, number]>([0, 0]);
-
-    // 查询激活对象的index
-    // const findActiveIndex = useMemo(() => {
-    //     return list.find(item => item.key === activeObject?.key);
-    // }, [list, activeObject]);
 
     // 查询激活对象
     const activeObject = useMemo(() => list.find(item => item.active) || null, [list]);
-
     // 设置颜色
     const setColor = (color: string) => setList((state) => state.map((item) => ({ ...item, color: item.active ? color : item.color })));
     // 记录初始值X,Y
@@ -67,6 +60,24 @@ export const useCanvas = () => {
         setList((state) => state.map((item) => ({ ...item, active: false })));
         return false;
     };
+
+    // 设置宽高
+    const setWidthAndHeight = (option: { width: number | string, height: number | string }) => {
+        const { width, height } = option;
+        setList((state) => {
+            return state.map((item) => {
+                if (item.active) {
+                    return {
+                        ...item,
+                        size: Object.assign({}, item.size, { width: +width, height: +height }),
+                        bound: Object.assign({}, item.bound, { x2: item.bound.x1 + (+width), y2: item.bound.y1 + (+height) }),
+                    };
+                }
+                return item;
+            });
+        });
+    };
+
     const option = {
         setColor,
         checkBound: onCheck,
@@ -74,6 +85,7 @@ export const useCanvas = () => {
         setInitLocation,
         setActiveLocation,
         cleanInitLocation,
+        setWidthAndHeight,
     };
     return {
         element: <CanvasScreen active={activeObject} list={list} />,
