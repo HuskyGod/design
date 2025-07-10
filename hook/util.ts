@@ -17,6 +17,7 @@ export const createCanvasElement: () => CanvasType = () => {
         size: { width: 100, height: 100, x: 0, y: 0 },
         color: 'lightblue',
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },
+        round: { show: false, value: 0 },
     };
 };
 

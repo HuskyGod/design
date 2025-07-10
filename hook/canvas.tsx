@@ -9,6 +9,7 @@ export interface CanvasType {
     color: string,
     size: { width: number, height: number, x: number, y: number },
     bound: { x1: number, x2: number, y1: number, y2: number }
+    round?: { show: boolean, value: number }
 }
 
 
@@ -18,10 +19,24 @@ export const useCanvas = () => {
     const [list, setList] = useState<CanvasType[]>([createCanvasElement()]);
     const initXAndY = React.useRef<[number, number]>([0, 0]);
 
+    const setActiveOption: (fn: (item: CanvasType) => CanvasType) => void = (fn) => {
+        setList((state) => {
+            return state.map((item) => {
+                if (item.active) {
+                    const result = fn(item);
+                    return {
+                        ...item,
+                        ...result,
+                    };
+                }
+                return item;
+            });
+        });
+    };
     // 查询激活对象
     const activeObject = useMemo(() => list.find(item => item.active) || null, [list]);
     // 设置颜色
-    const setColor = (color: string) => setList((state) => state.map((item) => ({ ...item, color: item.active ? color : item.color })));
+    const setColor = (color: string) => setActiveOption((item) => ({ ...item, color: item.active ? color : item.color }));
     // 记录初始值X,Y
     const setInitLocation = (object: CanvasType) => {
         initXAndY.current = [object!.size.x, object!.size.y];
@@ -33,18 +48,13 @@ export const useCanvas = () => {
     // 设置x,y
     const setActiveLocation = (option: { x: number, y: number }) => {
         const { x, y } = option;
-        setList((state) => {
-            return state.map((item) => {
-                if (item.active) {
-                    const [x1, x2, y1, y2] = getCanvaItemMoveInfo(item, initXAndY.current, x, y);
-                    return {
-                        ...item,
-                        size: Object.assign({}, item.size, { x: x1, y: y1 }),
-                        bound: { x1, x2, y1, y2 },
-                    };
-                }
-                return item;
-            });
+        setActiveOption((item) => {
+            const [x1, x2, y1, y2] = getCanvaItemMoveInfo(item, initXAndY.current, x, y);
+            return {
+                ...item,
+                size: Object.assign({}, item.size, { x: x1, y: y1 }),
+                bound: { x1, x2, y1, y2 },
+            };
         });
     };
     // 检查边界
@@ -60,25 +70,29 @@ export const useCanvas = () => {
         setList((state) => state.map((item) => ({ ...item, active: false })));
         return false;
     };
-
     // 设置宽高
     const setWidthAndHeight = (option: { width: number | string, height: number | string }) => {
         const { width, height } = option;
-        setList((state) => {
-            return state.map((item) => {
-                if (item.active) {
-                    return {
-                        ...item,
-                        size: Object.assign({}, item.size, { width: +width, height: +height }),
-                        bound: Object.assign({}, item.bound, { x2: item.bound.x1 + (+width), y2: item.bound.y1 + (+height) }),
-                    };
-                }
-                return item;
-            });
+        setActiveOption((item) => {
+            return {
+                ...item,
+                size: Object.assign({}, item.size, { width: +width, height: +height }),
+                bound: Object.assign({}, item.bound, { x2: item.bound.x1 + (+width), y2: item.bound.y1 + (+height) }),
+            };
+        });
+    };
+    // 设置圆角
+    const setRound = (option: { show: boolean, value: number }) => {
+        setActiveOption((item) => {
+            return {
+                ...item,
+                round: option,
+            };
         });
     };
 
     const option = {
+        setRound,
         setColor,
         checkBound: onCheck,
         activeObject,
