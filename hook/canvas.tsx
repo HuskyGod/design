@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import CanvasScreen from '../component/canvas';
 import { checkBound, createCanvasElement, getCanvaItemMoveInfo, getEvent, MoveEvent } from './util';
-export type CanvasElementType = 'rect'
+export type CanvasElementType = 'rect' | 'circle'
 export interface CanvasType {
     active: boolean,
     key: string,
@@ -101,6 +101,13 @@ export const useCanvas = () => {
             };
         });
     };
+    // 添加画布对象
+    const addShapeElement = (type: CanvasType['type']) => {
+        console.log('111', type);
+        setList((state) => {
+            return ([] as CanvasType[]).concat([createCanvasElement(type)], state);
+        });
+    };
 
     const option = {
         setBorder,
@@ -112,6 +119,7 @@ export const useCanvas = () => {
         setActiveLocation,
         cleanInitLocation,
         setWidthAndHeight,
+        addShapeElement,
     };
     return {
         element: <CanvasScreen active={activeObject} list={list} />,

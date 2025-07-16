@@ -9,11 +9,11 @@ export interface MoveEvent {
     y: number
 }
 
-export const createCanvasElement: () => CanvasType = () => {
+export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (type) => {
     return {
         active: false,
         key: uuid.v4(),
-        type: 'rect',
+        type: type,
         size: { width: 100, height: 100, x: 0, y: 0 },
         color: 'lightblue',
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },

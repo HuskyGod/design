@@ -1,40 +1,35 @@
 //import liraries
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { useModal } from '../../hook/modal';
 import ModalBox from '../ModalBox';
-import { CanvasOption } from '../../hook/canvas';
+import { CanvasOption, CanvasType } from '../../hook/canvas';
 import styles from './style';
-import Svg, { Rect, SvgUri } from 'react-native-svg';
-import RectSvg from '../../assest/svg/rect.svg';
+import Svg, { Circle, Rect } from 'react-native-svg';
 import { Flex } from '@ant-design/react-native';
 // create a component
 interface ColorProp {
     modal: ReturnType<typeof useModal>,
     option: CanvasOption,
+    onSelect: (type?: CanvasType['type']) => void
 }
 
-const requireRourceToString = (id: number) => {
-    console.log('id', id);
-    return fetch(Image.resolveAssetSource(id).uri).then((res) => {
-        return res.text();
-    });
-};
 
-const ShapeBox: React.FC<ColorProp> = ({ modal }) => {
+const ShapeBox: React.FC<ColorProp> = ({ modal, onSelect }) => {
 
-    const [shapeList, setShapeList] = useState<{ name: string, svg: string, label: string }[]>([]);
+    const [shapeList, setShapeList] = useState<{ name: string, svg: React.ReactNode, label: string }[]>([]);
+
+    const [shape, setShape] = useState<{ name: CanvasType['type'], svg: React.ReactNode, label: string } | null>(null);
 
     const onFinish = useCallback(() => {
+        onSelect(shape?.name);
         modal.onClose();
-    }, [modal]);
+    }, [modal, onSelect, shape]);
 
     const onInit = async () => {
         setShapeList([
-            { name: 'rect', svg: await requireRourceToString(RectSvg), label: '矩形' },
-            { name: 'rect1', svg: await requireRourceToString(RectSvg), label: '矩形' },
-            { name: 'rect2', svg: await requireRourceToString(RectSvg), label: '矩形' },
-            { name: 'rect3', svg: await requireRourceToString(RectSvg), label: '矩形' },
+            { name: 'rect', svg: await <Rect width={100} height={100} fill={'#666'} />, label: '矩形' },
+            { name: 'circle', svg: await <Circle cx={50} cy={50} r={50} fill={'#666'} />, label: '圆形' },
         ]);
     };
 
@@ -52,21 +47,14 @@ const ShapeBox: React.FC<ColorProp> = ({ modal }) => {
             <View style={styles.titleBox}><Text style={styles.title}>基本形状</Text></View>
             <Flex wrap="wrap" justify="between">
                 {shapeList.map(item => (
-                    <Flex style={{ ...styles.titleBox, width: 100 }} direction="column" align="center" key={item.name}>
-                        {/* <SvgUri
-                            width={100}
-                            height={100}
-                            uri={item.svg}
-                        /> */}
-                        <Svg style={{ width: '100%', height: 100 }}>
-                            <Rect
-                                width={100}
-                                height={100}
-                                fill={'red'}
-                            />
-                        </Svg>
-                        <Text>{item.label}</Text>
-                    </Flex>
+                    <TouchableOpacity key={item.name} onPress={() => setShape(item)}>
+                        <Flex style={{ ...styles.titleBox, width: 100 }} direction="column" align="center">
+                            <Svg style={styles.svg}>
+                                {item.svg}
+                            </Svg>
+                            <Text>{item.label}</Text>
+                        </Flex>
+                    </TouchableOpacity>
                 ))}
             </Flex>
         </ModalBox>

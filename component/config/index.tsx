@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styles from './style';
 import BaseInfoBox from '../baseInfoBox';
 import { useModal } from '../../hook/modal';
-import { CanvasOption } from '../../hook/canvas';
+import { CanvasOption, CanvasType } from '../../hook/canvas';
 import { Icon } from '@ant-design/react-native';
 import ShapeBox from '../shapeBox';
 
@@ -19,6 +19,11 @@ const ConfigList: React.FC<Props> = ({ option }) => {
     const onSelect = (color: string) => {
         option.setColor(color);
         baseModal.onClose();
+    };
+
+    const onCreateShape = (type?: CanvasType['type']) => {
+        option.addShapeElement(type!);
+        shapeModal.onClose();
     };
 
     return (
@@ -38,7 +43,7 @@ const ConfigList: React.FC<Props> = ({ option }) => {
                 </TouchableOpacity>
             </ScrollView>
             <BaseInfoBox option={option} onSelect={onSelect} modal={baseModal} />
-            <ShapeBox option={option} modal={shapeModal} />
+            <ShapeBox option={option} modal={shapeModal} onSelect={onCreateShape} />
         </View>
     );
 };

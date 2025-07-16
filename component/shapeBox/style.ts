@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     titleBox: { marginBottom: 15 },
     title: { fontSize: 20, fontWeight: 'bold' },
     round: { marginTop: 20 },
+    svg: { width: '100%', height: 100, marginBottom: 10 },
 });
 
 export default styles;
