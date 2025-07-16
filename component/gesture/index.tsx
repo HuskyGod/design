@@ -19,17 +19,16 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         const check = option.checkBound(e);
         isObject.current = check;
     }).onUpdate((e) => {
-        console.log(e.translationX);
         if (isObject.current) {
-            option.setActiveLocation({ x: e.translationX, y: e.translationY });
-            return false;
+            return setTimeout(() => {
+                option.setActiveLocation({ x: e.translationX, y: e.translationY });
+            }, 50);
         }
         setTranslationX((-e.translationX));
         setTranslationY((-e.translationY));
     }).onEnd(() => {
         if (isObject.current) {
-            option.cleanInitLocation();
-            return false;
+            // option.cleanInitLocation();
         }
         setTranslationOffsetX((state => (state + (translationX))));
         setTranslationOffsetY((state => (state + (translationY))));
