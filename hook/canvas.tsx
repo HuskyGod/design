@@ -103,7 +103,6 @@ export const useCanvas = () => {
     };
     // 添加画布对象
     const addShapeElement = (type: CanvasType['type']) => {
-        console.log('111', type);
         setList((state) => {
             return ([] as CanvasType[]).concat([createCanvasElement(type)], state);
         });

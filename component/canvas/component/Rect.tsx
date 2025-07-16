@@ -3,7 +3,6 @@ import { CanvasType } from '../../../hook/canvas';
 
 // create a component
 const RectItem: React.FC<{ option: CanvasType }> = ({ option }) => {
-    console.log(option);
     const propValue = {
         x: option.size.x,
         y: option.size.y,

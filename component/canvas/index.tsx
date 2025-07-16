@@ -23,7 +23,6 @@ const CanvasScreen: React.FC<Prop> = ({ list, active }) => {
     const onLayout = useCallback((e: LayoutChangeEvent) => {
         setSize(e.nativeEvent.layout);
     }, []);
-    console.log('active', active);
     return (
         <Canvas style={style.container} onLayout={onLayout}>
             <ContextBridge>

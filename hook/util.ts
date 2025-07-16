@@ -64,7 +64,6 @@ export const checkPointRect = (e: MoveEvent, item: CanvasType) => {
     const checkList = [topLeft, topRight, bottomRight, bottomLeft];
     return checkList.reduce((list, item, index) => {
         if (checkLocation(e, item)) {
-            console.log('1', index);
             list[index] = true;
         }
         return list;

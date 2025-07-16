@@ -19,8 +19,8 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         const check = option.checkBound(e);
         isObject.current = check;
     }).onUpdate((e) => {
+        console.log(e.translationX);
         if (isObject.current) {
-            console.log('111', e.translationX, e.translationY);
             option.setActiveLocation({ x: e.translationX, y: e.translationY });
             return false;
         }

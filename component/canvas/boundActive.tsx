@@ -9,7 +9,6 @@ interface Props {
 
 const BoundActive: React.FC<Props> = ({ active }) => {
     const size = rectSize;
-    console.log('rectSize', rectSize);
     const linePatch = useMemo(() => {
         const path = Skia.Path.Make();
         path.moveTo(active.bound.x1, active.bound.y1);
