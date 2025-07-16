@@ -7,7 +7,7 @@ export interface CanvasType {
     key: string,
     type: CanvasElementType,
     color: string,
-    size: { width: number, height: number, x: number, y: number },
+    size: { width: number, height: number, x: number, y: number, r?: number },
     bound: { x1: number, x2: number, y1: number, y2: number }
     round?: { show: boolean, value: number }
     border?: { show: boolean, value: number }
