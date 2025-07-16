@@ -17,7 +17,7 @@ export interface CanvasType {
 export type CanvasOption = ReturnType<typeof useCanvas>['option']
 
 export const useCanvas = () => {
-    const [list, setList] = useState<CanvasType[]>([createCanvasElement()]);
+    const [list, setList] = useState<CanvasType[]>([]);
     const initXAndY = React.useRef<[number, number]>([0, 0]);
 
     // 设置当前选中

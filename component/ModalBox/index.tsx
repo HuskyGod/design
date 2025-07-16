@@ -32,8 +32,8 @@ const MyComponent: React.FC<MyModalProps> = (props) => {
             visible={show}
         >
             <Flex direction="column" style={style.container}>
-                <ScrollView style={{ flex: 1 }}>
-                    <View >
+                <ScrollView style={{ flex: 1, width: '100%' }}>
+                    <View style={{ width: '100%' }}>
                         {/* <Flex justify="end" style={style.clone}><ButtomBox onClick={modal.onClose}>关闭</ButtomBox></Flex> */}
                         {children}
                     </View>
