@@ -6,8 +6,8 @@ import { CanvasType } from '../../../hook/canvas';
 // create a component
 const CircleItem: React.FC<{ option: CanvasType }> = ({ option }) => {
     const propValue = {
-        cx: option.size.r,
-        cy: option.size.r,
+        cx: option.size.r! + option.size.x,
+        cy: option.size.r! + option.size.y,
         color: option.color,
         r: option.size.r!,
     };

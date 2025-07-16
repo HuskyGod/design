@@ -11,10 +11,6 @@ export interface MoveEvent {
 
 export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (type) => {
     let size = { width: 100, height: 100, x: 0, y: 0, r: 50 };
-    if (type === 'circle') {
-        size.x = 50;
-        size.y = 50;
-    }
     return {
         active: false,
         key: uuid.v4(),
