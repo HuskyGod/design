@@ -15,6 +15,9 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
     const panGesture = Gesture.Pan().minDistance(1);
     const isObject = useRef(false);
 
+    const translationXNumber = getBoundNumber(translationOffsetX + translationX);
+    const translationYNumber = getBoundNumber(translationOffsetY + translationY);
+
     panGesture.onBegin((e) => {
         const check = option.checkBound(e);
         isObject.current = check;
@@ -38,7 +41,7 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         setTranslationY(0);
     }).runOnJS(true);
     return (
-        <Provider value={{ translationX: getBoundNumber(translationOffsetX + translationX), translationY: getBoundNumber(translationOffsetY + translationY) }}>
+        <Provider value={{ translationX: translationXNumber, translationY: translationYNumber }}>
             <GestureHandlerRootView style={styles.container}>
                 <GestureDetector gesture={panGesture}>
                     {children}
