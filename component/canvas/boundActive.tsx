@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { CanvasType } from '../../hook/canvas';
-import { Path, Rect, Skia } from '@shopify/react-native-skia';
+import { Group, Path, Rect, Skia } from '@shopify/react-native-skia';
 import { rectSize } from '../../hook/util';
+import context from '../gesture/context';
 
 interface Props {
     active: CanvasType
 }
 
 const BoundActive: React.FC<Props> = ({ active }) => {
+    const contextValue = useContext(context);
     const size = rectSize;
     const linePatch = useMemo(() => {
         const path = Skia.Path.Make();
@@ -26,15 +28,15 @@ const BoundActive: React.FC<Props> = ({ active }) => {
         const leftBottomRect = (<Rect key={'leftBottom'} x={active.bound.x1 - (size / 2)} y={active.bound.y2 - (size / 2)} width={size} height={size} color="white" />);
         const rightBottomRect = (<Rect key={'rightBottom'} x={active.bound.x2 - (size / 2)} y={active.bound.y2 - (size / 2)} width={size} height={size} color="white" />);
         return [leftTopRect, rightTopRect, rightBottomRect, leftBottomRect];
-    }, [active]);
+    }, [active, size]);
     return (
-        <>
+        <Group transform={[{ translateX: -contextValue.translationX }, { translateY: -contextValue.translationY }]}>
             <Path
                 path={linePatch}
                 style="stroke" strokeWidth={1} color="#3EB489"
             />
             {rectList}
-        </>
+        </Group>
     );
 };
 

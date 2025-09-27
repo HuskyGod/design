@@ -9,6 +9,7 @@ import { useContextBridge } from 'its-fine';
 import { ListBox } from './Item';
 import BoundActive from './boundActive';
 import { ruleSize } from '../../hook/util';
+import { View } from '@ant-design/react-native';
 
 interface Prop {
     list: CanvasType[],
@@ -24,17 +25,21 @@ const CanvasScreen: React.FC<Prop> = ({ list, active }) => {
         setSize(e.nativeEvent.layout);
     }, []);
     return (
-        <Canvas style={style.container} onLayout={onLayout}>
-            <ContextBridge>
-                <CanvasBackgound width={size.width} height={size.height} size={sizeNumber} />
-                <Group transform={[{ translateX: sizeNumber }, { translateY: sizeNumber }]}>
+        <View style={style.container} onLayout={onLayout}>
+            <Canvas style={[style.canvas, { zIndex: 1 }]}>
+                <ContextBridge>
+                    <CanvasBackgound width={size.width} height={size.height} size={sizeNumber} />
+                </ContextBridge>
+            </Canvas>
+            <Canvas style={[style.canvas, { zIndex: 10, top: ruleSize, left: ruleSize}]}>
+                <ContextBridge>
                     <ListBox list={list} />
                     { active ? (
                         <BoundActive active={active} />
                     ) : null }
-                </Group>
-            </ContextBridge>
-        </Canvas>
+                </ContextBridge>
+            </Canvas>
+        </View>
     );
 };
 

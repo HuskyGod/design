@@ -1,6 +1,6 @@
 //import liraries
 import React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView, StatusBar, View } from 'react-native';
 import { useCanvas } from './hook/canvas';
 import ConfigList from './component/config';
 import GestureView from './component/gesture';
@@ -11,18 +11,21 @@ const MyComponent = () => {
     const { element, option } = useCanvas();
 
     return (
-        <FiberProvider>
-            <View style={{ flex: 1, flexDirection: 'column' }}>
-                <View style={{ flex: 1 }}>
-                    <GestureView option={option}>
-                        <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
-                            {element}
-                        </View>
-                    </GestureView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <FiberProvider>
+                <View style={{ height: StatusBar.currentHeight, backgroundColor: 'lightblue', borderBottomWidth: 1, borderBottomColor: 'blue' }} />
+                <View style={{ flex: 1, flexDirection: 'column' }}>
+                    <View style={{ flex: 1 }}>
+                        <GestureView option={option}>
+                            <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
+                                {element}
+                            </View>
+                        </GestureView>
+                    </View>
+                    <ConfigList option={option} />
                 </View>
-                <ConfigList option={option} />
-            </View>
-        </FiberProvider>
+            </FiberProvider>
+        </SafeAreaView>
     );
 };
 

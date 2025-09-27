@@ -70,7 +70,9 @@ export const checkPointRect = (e: MoveEvent, item: CanvasType) => {
     }, [] as boolean[]);
 };
 
-export const getEvent = (e: MoveEvent) => {
-    const event = { x: e.x - ruleSize, y: e.y - ruleSize };
+export const getEvent = (e: MoveEvent, offsetX: number, offsetY: number) => {
+    console.log(offsetX, offsetY);
+    const event = { x: (e.x - ruleSize) + offsetX, y: (e.y - ruleSize) + offsetY };
+    console.log(JSON.stringify(event));
     return event;
 };

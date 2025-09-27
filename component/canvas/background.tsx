@@ -1,9 +1,9 @@
-import { Group, Line, Rect, Text, vec } from "@shopify/react-native-skia";
-import React, { useContext, useMemo } from "react";
-import { createXLable, createXLine, createYLable, createYLine, LineOption } from "./utils";
-import context from "../gesture/context";
+import { Group, Line, Rect, Text, vec } from '@shopify/react-native-skia';
+import React, { useContext, useMemo } from 'react';
+import { createXLable, createXLine, createYLable, createYLine, LineOption } from './utils';
+import context from '../gesture/context';
 
-const color = "lightblue"
+const color = 'lightblue';
 
 interface Props {
     width: number,
@@ -32,7 +32,7 @@ const CanvasBackgound: React.FC<Props> = ({ width, height, size }) => {
         return createYLable(size, widthSize, contextValue.translationX);
     }, [widthSize, size, contextValue.translationX]);
 
-    if (!width || !height) return <Group></Group>;
+    if (!width || !height) {return <Group />;}
     return (
         <Group>
             {/* x轴tab */}
@@ -77,7 +77,7 @@ const CanvasBackgound: React.FC<Props> = ({ width, height, size }) => {
                             <Line
                                 p1={item.p1}
                                 p2={item.p2}
-                                color={"blue"}
+                                color={'blue'}
                                 style="stroke"
                                 strokeWidth={1}
                             />
@@ -111,7 +111,7 @@ const CanvasBackgound: React.FC<Props> = ({ width, height, size }) => {
                             <Line
                                 p1={item.p1}
                                 p2={item.p2}
-                                color={"blue"}
+                                color={'blue'}
                                 style="stroke"
                                 strokeWidth={1}
                             />

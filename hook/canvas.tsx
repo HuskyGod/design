@@ -60,8 +60,8 @@ export const useCanvas = () => {
         });
     };
     // 检查边界
-    const onCheck = (event: MoveEvent) => {
-        const e = getEvent(event);
+    const onCheck = (event: MoveEvent, offsetX: number, offsetY: number) => {
+        const e = getEvent(event, offsetX, offsetY);
         const data = checkBound(e, list);
         if (data) {
             const [object, findIndex] = data;

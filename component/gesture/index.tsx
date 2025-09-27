@@ -5,6 +5,8 @@ import styles from './style';
 import { Provider } from './context';
 import { CanvasOption } from '../../hook/canvas';
 import { getBoundNumber } from '../../hook/util';
+import { Text, View } from 'react-native';
+import { Flex } from '@ant-design/react-native';
 
 // create a component
 const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }> = ({ children, option }) => {
@@ -19,7 +21,7 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
     const translationYNumber = getBoundNumber(translationOffsetY + translationY);
 
     panGesture.onBegin((e) => {
-        const check = option.checkBound(e);
+        const check = option.checkBound(e, translationXNumber, translationYNumber);
         isObject.current = check;
     }).onUpdate((e) => {
         if (isObject.current) {
@@ -44,7 +46,13 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         <Provider value={{ translationX: translationXNumber, translationY: translationYNumber }}>
             <GestureHandlerRootView style={styles.container}>
                 <GestureDetector gesture={panGesture}>
-                    {children}
+                    <View style={{ height: '100%' }}>
+                        {children}
+                        {/* <Flex justify="center">
+                            <Text style={{ color: '#333', textAlign: 'center', marginRight: 15 }}>{translationXNumber}</Text>
+                            <Text style={{ color: '#333', textAlign: 'center' }}>{translationYNumber}</Text>
+                        </Flex> */}
+                    </View>
                 </GestureDetector>
             </GestureHandlerRootView>
         </Provider>
