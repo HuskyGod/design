@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     clone: {
         borderTopColor: '#efefef',
         borderTopWidth: 1.5,
-        paddingTop: 20,
+        paddingVertical: 20,
         width: '100%',
         marginTop: 10,
     },

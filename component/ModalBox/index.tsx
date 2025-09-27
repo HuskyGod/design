@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import style from './styles';
 import ButtomBox from '../Form/buttom';
 import { useModal } from '../../hook/modal';
-import { ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import FlexItem from '@ant-design/react-native/lib/flex/FlexItem';
 
 interface MyModalProps extends ModalProps {
@@ -23,32 +23,37 @@ const MyComponent: React.FC<MyModalProps> = (props) => {
         }
     }, [modal.open, show]);
 
+    console.log('show', show);
+
     return (
         <Modal
-            modalType="modal"
+            modalType="portal"
             transparent={false}
             animationType="slide-up"
-            {...props}
+            // {...props}
             visible={show}
+            style={{ paddingTop: 20 }}
         >
-            <Flex direction="column" style={style.container}>
-                <ScrollView style={{ flex: 1, width: '100%' }}>
-                    <View style={{ width: '100%' }}>
-                        {/* <Flex justify="end" style={style.clone}><ButtomBox onClick={modal.onClose}>关闭</ButtomBox></Flex> */}
-                        {children}
+            <SafeAreaView>
+                <Flex direction="column" style={style.container}>
+                    <ScrollView style={{ flex: 1, width: '100%' }}>
+                        <View style={{ width: '100%' }}>
+                            {/* <Flex justify="end" style={style.clone}><ButtomBox onClick={modal.onClose}>关闭</ButtomBox></Flex> */}
+                            {children}
+                        </View>
+                    </ScrollView>
+                    <View style={style.clone}>
+                        <Flex>
+                            <FlexItem>
+                                <Button onPress={props.onFinish} type="primary">确认</Button>
+                            </FlexItem>
+                            <FlexItem style={{ marginLeft: 20 }}>
+                                <Button onPress={modal.onClose}>关闭</Button>
+                            </FlexItem>
+                        </Flex>
                     </View>
-                </ScrollView>
-                <View style={style.clone}>
-                    <Flex>
-                        <FlexItem>
-                            <Button onPress={props.onFinish} type="primary">确认</Button>
-                        </FlexItem>
-                        <FlexItem style={{ marginLeft: 20 }}>
-                            <Button onPress={modal.onClose}>关闭</Button>
-                        </FlexItem>
-                    </Flex>
-                </View>
-            </Flex>
+                </Flex>
+            </SafeAreaView>
         </Modal>
     );
 };

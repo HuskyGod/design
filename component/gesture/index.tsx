@@ -25,9 +25,10 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         isObject.current = check;
     }).onUpdate((e) => {
         if (isObject.current) {
-            return setTimeout(() => {
-                option.setActiveLocation({ x: e.translationX, y: e.translationY });
-            }, 50);
+            // return setTimeout(() => {
+            //     option.setActiveLocation({ x: e.translationX, y: e.translationY });
+            // }, 50);
+            return option.setActiveLocation({ x: e.translationX, y: e.translationY });
         }
         setTranslationX((-e.translationX));
         setTranslationY((-e.translationY));
@@ -37,8 +38,6 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         }
         setTranslationOffsetX((state => (state + (translationX))));
         setTranslationOffsetY((state => (state + (translationY))));
-        // setTranslationOffsetX((state => state + (translationX)));
-        // setTranslationOffsetY((state => state + (translationY)));
         setTranslationX(0);
         setTranslationY(0);
     }).runOnJS(true);
@@ -48,10 +47,6 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
                 <GestureDetector gesture={panGesture}>
                     <View style={{ height: '100%' }}>
                         {children}
-                        {/* <Flex justify="center">
-                            <Text style={{ color: '#333', textAlign: 'center', marginRight: 15 }}>{translationXNumber}</Text>
-                            <Text style={{ color: '#333', textAlign: 'center' }}>{translationYNumber}</Text>
-                        </Flex> */}
                     </View>
                 </GestureDetector>
             </GestureHandlerRootView>
