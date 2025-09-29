@@ -19,12 +19,32 @@ export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (ty
         color: 'lightblue',
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },
         round: { show: false, value: 0 },
+        checkLocation (e: MoveEvent) {
+            const optionCheck = checkLocation(e, this.bound);
+            const pointCheck = checkPointRect(e, this).findIndex((value) => !!value);
+            return optionCheck || pointCheck !== -1;
+        },
+        checkPointRect (e: MoveEvent) {
+            return checkPointRect(e, this);
+        },
     };
+};
+
+export const checkPoint = (event: MoveEvent, activeOption: CanvasType) => {
+    const pointRectList = activeOption.checkPointRect(event);
+    const findIndex = pointRectList.findIndex((value) => !!value);
+    if (findIndex !== -1) {
+        return {
+            key: activeOption.key,
+            pointIndex: findIndex,
+        };
+    }
+    return { key: '', pointIndex: -1 };
 };
 
 export const checkBound = (event: MoveEvent, list: CanvasType[]) => {
     const findIndex = list.findIndex((item) => {
-        return checkLocation(event, item.bound);
+        return item.checkLocation(event);
     });
     return (findIndex === -1 ? false : [list[findIndex], findIndex]) as false | [CanvasType, number];
 };
@@ -70,9 +90,21 @@ export const checkPointRect = (e: MoveEvent, item: CanvasType) => {
     }, [] as boolean[]);
 };
 
-export const getEvent = (e: MoveEvent, offsetX: number, offsetY: number) => {
-    console.log(offsetX, offsetY);
-    const event = { x: (e.x - ruleSize) + offsetX, y: (e.y - ruleSize) + offsetY };
-    console.log(JSON.stringify(event));
+export const getEvent = (e: MoveEvent, offsetX?: number, offsetY?: number) => {
+    const event = { x: (e.x - ruleSize) + (offsetX || 0), y: (e.y - ruleSize) + (offsetY || 0) };
     return event;
+};
+
+export const getPointRectComplex = (e: MoveEvent, pointIndex: number, size: CanvasType['size']) => {
+    if (pointIndex === 0) {
+        const y = size.y + e.y;
+        const x = size.x + e.x;
+        console.log(JSON.stringify(size), x, y);
+        return {
+            ...size,
+            y: y,
+            x: x,
+        };
+    }
+    return size;
 };

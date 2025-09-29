@@ -5,8 +5,7 @@ import styles from './style';
 import { Provider } from './context';
 import { CanvasOption } from '../../hook/canvas';
 import { getBoundNumber } from '../../hook/util';
-import { Text, View } from 'react-native';
-import { Flex } from '@ant-design/react-native';
+import { View } from 'react-native';
 
 // create a component
 const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }> = ({ children, option }) => {
@@ -25,9 +24,6 @@ const GestureView: React.FC<{ children: React.ReactNode, option: CanvasOption }>
         isObject.current = check;
     }).onUpdate((e) => {
         if (isObject.current) {
-            // return setTimeout(() => {
-            //     option.setActiveLocation({ x: e.translationX, y: e.translationY });
-            // }, 50);
             return option.setActiveLocation({ x: e.translationX, y: e.translationY });
         }
         setTranslationX((-e.translationX));

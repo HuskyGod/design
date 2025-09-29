@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import CanvasScreen from '../component/canvas';
-import { checkBound, createCanvasElement, getCanvaItemMoveInfo, getEvent, MoveEvent } from './util';
+import { checkBound, checkPoint, createCanvasElement, getCanvaItemMoveInfo, getEvent, getPointRectComplex, MoveEvent } from './util';
 export type CanvasElementType = 'rect' | 'circle'
 export interface CanvasType {
     active: boolean,
@@ -11,6 +11,8 @@ export interface CanvasType {
     bound: { x1: number, x2: number, y1: number, y2: number }
     round?: { show: boolean, value: number }
     border?: { show: boolean, value: number }
+    checkLocation: (e: MoveEvent) => boolean
+    checkPointRect: (e: MoveEvent) => boolean[]
 }
 
 
@@ -19,7 +21,7 @@ export type CanvasOption = ReturnType<typeof useCanvas>['option']
 export const useCanvas = () => {
     const [list, setList] = useState<CanvasType[]>([]);
     const initXAndY = React.useRef<[number, number]>([0, 0]);
-
+    const [point, setPoint] = useState<number>(-1);
     // 设置当前选中
     const setActiveOption: (fn: (item: CanvasType) => CanvasType) => void = (fn) => {
         setList((state) => {
@@ -48,8 +50,11 @@ export const useCanvas = () => {
         initXAndY.current = [0, 0];
     };
     // 设置x,y
-    const setActiveLocation = (option: { x: number, y: number }) => {
+    const setActiveLocation = (option: MoveEvent) => {
         const { x, y } = option;
+        if (point !== -1) {
+            return setPointData(option);
+        }
         setActiveOption((item) => {
             const [x1, x2, y1, y2] = getCanvaItemMoveInfo(item, initXAndY.current, x, y);
             return {
@@ -64,9 +69,10 @@ export const useCanvas = () => {
         const e = getEvent(event, offsetX, offsetY);
         const data = checkBound(e, list);
         if (data) {
-            const [object, findIndex] = data;
-            setList((state) => state.map((item, index) => ({ ...item, active: findIndex === index })));
+            const [object] = data;
+            setList((state) => state.map((item) => ({ ...item, active: object.key === item.key })));
             setInitLocation(object);
+            checkPointData(event, offsetX, offsetY, object);
             return true;
         }
         setList((state) => state.map((item) => ({ ...item, active: false })));
@@ -105,6 +111,31 @@ export const useCanvas = () => {
     const addShapeElement = (type: CanvasType['type']) => {
         setList((state) => {
             return ([] as CanvasType[]).concat([createCanvasElement(type)], state);
+        });
+    };
+    // 判断是否选中四个角
+    const checkPointData = (event: MoveEvent, offsetX: number, offsetY: number, active: CanvasType) => {
+        setPoint(-1);
+        const e = getEvent(event, offsetX, offsetY);
+        const checkOption = checkPoint(e, active!);
+        if (checkOption.key && checkOption.pointIndex !== -1) {
+            setPoint(checkOption.pointIndex);
+        }
+        return !!checkOption.key;
+    };
+    // 设置选中的角进行设置
+    const setPointData = (event: MoveEvent) => {
+        const active = JSON.parse(JSON.stringify(activeObject));
+        setList((state) => {
+            return state.map((option) => {
+                if (option.key === activeObject!.key) {
+                    return {
+                        ...option,
+                        size: getPointRectComplex(event, point!, active.size),
+                    };
+                }
+                return option;
+            });
         });
     };
 

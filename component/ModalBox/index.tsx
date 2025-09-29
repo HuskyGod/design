@@ -23,8 +23,6 @@ const MyComponent: React.FC<MyModalProps> = (props) => {
         }
     }, [modal.open, show]);
 
-    console.log('show', show);
-
     return (
         <Modal
             modalType="portal"
