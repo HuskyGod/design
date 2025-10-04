@@ -118,8 +118,6 @@ export const getPointRectComplex = (e: MoveEvent, pointIndex: number, size: Canv
         };
     };
 
-    // getRact();
-
     // 左上
     // const reversedX = e.x - size.width;
     // const x = reversedX > 0 ? size.x! + size.width : size.x! + (e.x);
