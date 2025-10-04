@@ -106,7 +106,7 @@ export const getPointRectComplex = (e: MoveEvent, pointIndex: number, size: Canv
         let width = reversedX > 0 ? reversedX : size.width + (-e.x);
         let height = reversedY > 0 ? reversedY : size.height + (-e.y);
         if ([1, 2].includes(pointIndex)) {
-            x = reversedX < 0 ? size.x! + reversedX : size.x;
+            x = reversedX < 0 ? size.x! + reversedX : size.x!;
             width = reversedX < 0 ? -(reversedX) : (size.width) + e.x;
         }
         if ([2, 3].includes(pointIndex)) {
