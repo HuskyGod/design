@@ -1,3 +1,4 @@
+import { configureProps } from 'react-native-reanimated/lib/typescript/ConfigHelper';
 import { CanvasType } from './canvas';
 import uuid from 'react-native-uuid';
 
@@ -60,10 +61,10 @@ export const getBoundNumber = (num: number) => {
     return Math.max(num, 0);
 };
 
-export const getCanvaItemMoveInfo = (item: CanvasType, init: [number, number], x: number, y: number) => {
-    const x1 = getBoundNumber(init[0] + x);
+export const getCanvaItemMoveInfo = (item: CanvasType, initOption: CanvasType['size'], x: number, y: number) => {
+    const x1 = getBoundNumber(initOption.x! + x);
     const x2 = getBoundNumber(x1 + item.size.width);
-    const y1 = getBoundNumber(init[1] + y);
+    const y1 = getBoundNumber(initOption.y! + y);
     const y2 = getBoundNumber(y1 + item.size.height);
     return [x1, x2, y1, y2];
 };
@@ -96,15 +97,71 @@ export const getEvent = (e: MoveEvent, offsetX?: number, offsetY?: number) => {
 };
 
 export const getPointRectComplex = (e: MoveEvent, pointIndex: number, size: CanvasType['size']) => {
-    if (pointIndex === 0) {
-        const y = size.y + e.y;
-        const x = size.x + e.x;
-        console.log(JSON.stringify(size), x, y);
+    const getRact = () => {
+        console.log(pointIndex);
+        const reversedX = [0, 3].includes(pointIndex) ? e.x - size.width : e.x + size.width;
+        const reversedY = [2, 3].includes(pointIndex) ? e.y + size.height : e.y - size.height;
+        let x = reversedX > 0 ? size.x! + size.width : size.x! + (e.x);
+        let y = reversedY > 0 ? size.y! + size.height : size.y! + (e.y);
+        let width = reversedX > 0 ? reversedX : size.width + (-e.x);
+        let height = reversedY > 0 ? reversedY : size.height + (-e.y);
+        if ([1, 2].includes(pointIndex)) {
+            x = reversedX < 0 ? size.x! + reversedX : size.x;
+            width = reversedX < 0 ? -(reversedX) : (size.width) + e.x;
+        }
+        if ([2, 3].includes(pointIndex)) {
+            y = reversedY < 0 ? size.y! + reversedY : size.y!;
+            height = reversedY < 0 ? -(reversedY) : (size.height) + e.y;
+        }
         return {
-            ...size,
-            y: y,
-            x: x,
+            x, y, width, height,
         };
-    }
-    return size;
+    };
+
+    // getRact();
+
+    // 左上
+    // const reversedX = e.x - size.width;
+    // const x = reversedX > 0 ? size.x! + size.width : size.x! + (e.x);
+    // const width = reversedX > 0 ? reversedX : size.width + (-e.x);
+    // const reversedY = e.y - size.height;
+    // const y = reversedY > 0 ? size.y! + size.height : size.y! + (e.y);
+    // const height = reversedY > 0 ? reversedY : size.height + (-e.y);
+    // const topLeftSize = { x, width, y, height };
+    // const list = [topLeftSize];
+
+    // 右上
+    // const reversedX = e.x + size.width;
+    // const x = reversedX < 0 ? size.x! + reversedX : size.x;
+    // const width = reversedX < 0 ? -(reversedX) : (size.width) + e.x;
+    // const reversedY = e.y - size.height;
+    // const y = reversedY > 0 ? size.y! + size.height : size.y! + (e.y);
+    // const height = reversedY > 0 ? reversedY : size.height + (-e.y);
+    // const list = [{}, { x, y, width, height }];
+    // let option = list[pointIndex];
+
+    // 右下角
+    // const reversedX = e.x + size.width;
+    // const x = reversedX < 0 ? size.x! + reversedX : size.x;
+    // const width = reversedX < 0 ? -(reversedX) : (size.width) + e.x;
+    // const reversedY = e.y + size.height;
+    // const y = reversedY < 0 ? size.y! + reversedY : size.y!;
+    // const height = reversedY < 0 ? -(reversedY) : (size.height) + e.y;
+    // const list = [{}, {}, { x, y, width, height }, {}];
+    // let option = list[pointIndex];
+
+    // 左下角
+    // const reversedX = e.x - size.width;
+    // const x = reversedX > 0 ? size.x! + size.width : size.x! + (e.x);
+    // const width = reversedX > 0 ? reversedX : size.width + (-e.x);
+    // const reversedY = e.y + size.height;
+    // const y = reversedY < 0 ? size.y! + reversedY : size.y!;
+    // const height = reversedY < 0 ? -(reversedY) : (size.height) + e.y;
+    // const list = [{}, {}, {}, { x, y, width, height }];
+
+    let option = getRact();
+    return {
+        ...size,
+        ...option,
+    };
 };

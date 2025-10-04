@@ -7,7 +7,7 @@ export interface CanvasType {
     key: string,
     type: CanvasElementType,
     color: string,
-    size: { width: number, height: number, x: number, y: number, r?: number },
+    size: { width: number, height: number, x?: number, y?: number, r?: number },
     bound: { x1: number, x2: number, y1: number, y2: number }
     round?: { show: boolean, value: number }
     border?: { show: boolean, value: number }
@@ -15,12 +15,15 @@ export interface CanvasType {
     checkPointRect: (e: MoveEvent) => boolean[]
 }
 
+const createSizeOption = () => {
+    return { width: 0, height: 0, x: 0, y: 0, r: 0 };
+};
 
 export type CanvasOption = ReturnType<typeof useCanvas>['option']
 
 export const useCanvas = () => {
     const [list, setList] = useState<CanvasType[]>([]);
-    const initXAndY = React.useRef<[number, number]>([0, 0]);
+    const initSize = React.useRef<CanvasType['size']>(createSizeOption());
     const [point, setPoint] = useState<number>(-1);
     // 设置当前选中
     const setActiveOption: (fn: (item: CanvasType) => CanvasType) => void = (fn) => {
@@ -43,11 +46,11 @@ export const useCanvas = () => {
     const setColor = (color: string) => setActiveOption((item) => ({ ...item, color: item.active ? color : item.color }));
     // 记录初始值X,Y
     const setInitLocation = (object: CanvasType) => {
-        initXAndY.current = [object!.size.x, object!.size.y];
+        initSize.current = object!.size;
     };
     // 清空初始值X,Y
     const cleanInitLocation = () => {
-        initXAndY.current = [0, 0];
+        initSize.current = createSizeOption();
     };
     // 设置x,y
     const setActiveLocation = (option: MoveEvent) => {
@@ -56,7 +59,7 @@ export const useCanvas = () => {
             return setPointData(option);
         }
         setActiveOption((item) => {
-            const [x1, x2, y1, y2] = getCanvaItemMoveInfo(item, initXAndY.current, x, y);
+            const [x1, x2, y1, y2] = getCanvaItemMoveInfo(item, initSize.current, x, y);
             return {
                 ...item,
                 size: Object.assign({}, item.size, { x: x1, y: y1 }),
@@ -125,13 +128,14 @@ export const useCanvas = () => {
     };
     // 设置选中的角进行设置
     const setPointData = (event: MoveEvent) => {
-        const active = JSON.parse(JSON.stringify(activeObject));
         setList((state) => {
             return state.map((option) => {
                 if (option.key === activeObject!.key) {
+                    const result = getPointRectComplex(event, point!, initSize.current);
                     return {
                         ...option,
-                        size: getPointRectComplex(event, point!, active.size),
+                        size: result,
+                        bound: { x1: result.x!, x2: result.x! + result.width, y1: result.y!, y2: result.y! + result.height },
                     };
                 }
                 return option;
