@@ -1,9 +1,9 @@
 //import liraries
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
-import { useModal } from '../../hook/modal';
-import ModalBox from '../ModalBox';
-import { CanvasOption, CanvasType } from '../../hook/canvas';
+import { useModal } from '../../../../hook/modal';
+import ModalBox from '../../index';
+import { CanvasOption, CanvasType } from '../../../../hook/canvas';
 import styles from './style';
 import Svg, { Circle, Rect } from 'react-native-svg';
 import { Flex } from '@ant-design/react-native';

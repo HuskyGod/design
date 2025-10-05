@@ -9,8 +9,8 @@ export interface CanvasType {
     color: string,
     size: { width: number, height: number, x?: number, y?: number, r?: number },
     bound: { x1: number, x2: number, y1: number, y2: number }
-    round?: { show: boolean, value: number }
-    border?: { show: boolean, value: number }
+    round?: { value: number }
+    border?: { value: number, color: string }
     checkLocation: (e: MoveEvent) => boolean
     checkPointRect: (e: MoveEvent) => boolean[]
 }
@@ -82,7 +82,7 @@ export const useCanvas = () => {
         return false;
     };
     // 设置宽高
-    const setWidthAndHeight = (option: { width: number | string, height: number | string }) => {
+    const setBaseInfo = (option: { x: number | string, y: number | string, width: number | string, height: number | string }) => {
         const { width, height } = option;
         setActiveOption((item) => {
             return {
@@ -93,7 +93,7 @@ export const useCanvas = () => {
         });
     };
     // 设置圆角
-    const setRound = (option: { show: boolean, value: number }) => {
+    const setRound = (option: { value: number }) => {
         setActiveOption((item) => {
             return {
                 ...item,
@@ -102,7 +102,7 @@ export const useCanvas = () => {
         });
     };
     // 设置边框
-    const setBorder = (option: { show: boolean, value: number }) => {
+    const setBorder = (option: { value: number, color: string }) => {
         setActiveOption((item) => {
             return {
                 ...item,
@@ -152,7 +152,7 @@ export const useCanvas = () => {
         setInitLocation,
         setActiveLocation,
         cleanInitLocation,
-        setWidthAndHeight,
+        setBaseInfo,
         addShapeElement,
     };
     return {

@@ -1,7 +1,7 @@
 //import liraries
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styles from './style';
-import BaseInfoBox from '../baseInfoBox';
+import BaseInfoBox from '../ModalBox/component/baseInfoBox';
 import { useModal } from '../../hook/modal';
 import { CanvasOption, CanvasType } from '../../hook/canvas';
 import { Icon } from '@ant-design/react-native';

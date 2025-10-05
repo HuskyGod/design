@@ -1,13 +1,13 @@
 //import liraries
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { useModal } from '../../hook/modal';
+import { useModal } from '../../../../hook/modal';
 import { LiquidGlassView } from 'react-native-liquid-view';
-import ModalBox from '../ModalBox';
+import ModalBox from '../..';
 import styles from './style';
 import { Flex,  Stepper,  Switch } from '@ant-design/react-native';
-import InputBox from '../Form/Input';
-import { CanvasOption } from '../../hook/canvas';
+import InputBox from '../../../Form/Input';
+import { CanvasOption } from '../../../../hook/canvas';
 import FlexItem from '@ant-design/react-native/lib/flex/FlexItem';
 // create a component
 interface ColorProp {
@@ -25,33 +25,37 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
     const active = option.activeObject;
     const [width, setWidth] = useState((active || {}).size?.width || 0);
     const [height, setHeight] = useState((active || {}).size?.height || 0);
-    const [radiuSwich, setRadiuSwich] = useState((active || {}).round?.show || false);
-    const [radiuValue, setRadiuValue] = useState((active || {}).round?.value || 0);
-    const [borderSwich, setBorderSwich] = useState((active || {}).border?.show || false);
-    const [borderValue, setBorderValue] = useState((active || {}).border?.value || 0);
+    const [x, setX] = useState((active || {}).size?.x || 0);
+    const [y, setY] = useState((active || {}).size?.y || 0);
+    // const [radiuSwich, setRadiuSwich] = useState((active || {}).round?.show || false);
+    // const [radiuValue, setRadiuValue] = useState((active || {}).round?.value || 0);
+    // const [borderSwich, setBorderSwich] = useState((active || {}).border?.show || false);
+    // const [borderValue, setBorderValue] = useState((active || {}).border?.value || 0);
 
     // 是否可设置圆角
-    const beAbleToSetRound = useMemo(() => ['rect', 'circle'].includes(active?.type || ''), [active]);
+    // const beAbleToSetRound = useMemo(() => ['rect', 'circle'].includes(active?.type || ''), [active]);
     // 是否可设置圆角
-    const beAbleToSetBorDer = useMemo(() => ['rect', 'circle'].includes(active?.type || ''), [active]);
+    // const beAbleToSetBorDer = useMemo(() => ['rect', 'circle'].includes(active?.type || ''), [active]);
 
     useEffect(() => {
         if (modal.open) {
             setWidth((active || {}).size?.width || 0);
             setHeight((active || {}).size?.height || 0);
-            setRadiuSwich((active || {}).round?.show || false);
-            setRadiuValue((active || {}).round?.value || 0);
-            setBorderSwich((active || {}).border?.show || false);
-            setBorderValue((active || {}).border?.value || 0);
+            setX((active || {}).size?.x || 0);
+            setY((active || {}).size?.y || 0);
+            // setRadiuSwich((active || {}).round?.show || false);
+            // setRadiuValue((active || {}).round?.value || 0);
+            // setBorderSwich((active || {}).border?.show || false);
+            // setBorderValue((active || {}).border?.value || 0);
         }
     }, [modal.open, active]);
 
     const onFinish = useCallback(() => {
-        option.setWidthAndHeight({ width, height });
-        option.setRound({ show: radiuSwich, value: radiuValue });
-        option.setBorder({ show: borderSwich, value: borderValue });
+        option.setBaseInfo({ x, y, width, height });
+        // option.setRound({ show: radiuSwich, value: radiuValue });
+        // option.setBorder({ show: borderSwich, value: borderValue });
         modal.onClose();
-    }, [option, width, height, modal, radiuSwich, radiuValue, borderSwich, borderValue]);
+    }, [option, width, height, x, y, modal]);
 
     return (
         <ModalBox
@@ -77,6 +81,17 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
                     ))
                 }
             </View>
+            {/* x和Y */}
+            <Flex style={{ marginBottom: 15 }}>
+                <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+                    <View style={styles.titleBox}><Text style={styles.title}>Y</Text></View>
+                    <View><InputBox value={`${y}`} placeholder="请输入Y轴坐班" onChangeInput={setY} /></View>
+                </Flex.Item>
+                <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+                    <View style={styles.titleBox}><Text style={styles.title}>X</Text></View>
+                    <View><InputBox value={`${x}`} placeholder="请输入X轴坐班" onChangeInput={setX} /></View>
+                </Flex.Item>
+            </Flex>
             {/* 宽高 */}
             <Flex style={{ marginBottom: 15 }}>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
@@ -88,7 +103,7 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
                     <View><InputBox value={`${height}`} placeholder="请输入高度" onChangeInput={setHeight} /></View>
                 </Flex.Item>
           </Flex>
-          {/* 圆角 */}
+          {/* 圆角
           {beAbleToSetRound && (
             <View style={[styles.titleBox, styles.round]} >
                 <Flex align="center">
@@ -110,8 +125,8 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
                     }
                 </Flex>
             </View>
-          )}
-          {/* 边框 */}
+          )} */}
+          {/* 边框
           {beAbleToSetBorDer && (
             <View style={[styles.titleBox, styles.round]} >
                 <Flex align="center">
@@ -133,7 +148,7 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
                     }
                 </Flex>
             </View>
-          )}
+          )} */}
         </ModalBox>
     );
 };
