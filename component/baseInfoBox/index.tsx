@@ -31,9 +31,9 @@ const BaseInfoBox: React.FC<ColorProp> = ({ option, modal, onSelect }) => {
     const [borderValue, setBorderValue] = useState((active || {}).border?.value || 0);
 
     // 是否可设置圆角
-    const beAbleToSetRound = useMemo(() => ['rect'].includes(active?.type || ''), [active]);
+    const beAbleToSetRound = useMemo(() => ['rect', 'circle'].includes(active?.type || ''), [active]);
     // 是否可设置圆角
-    const beAbleToSetBorDer = useMemo(() => ['rect'].includes(active?.type || ''), [active]);
+    const beAbleToSetBorDer = useMemo(() => ['rect', 'circle'].includes(active?.type || ''), [active]);
 
     useEffect(() => {
         if (modal.open) {
