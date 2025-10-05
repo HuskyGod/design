@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useModal } from '../../../../hook/modal';
 import { LiquidGlassView } from 'react-native-liquid-view';
-import ModalBox from '../..';
+import ModalBox from '../../../ModalBox';
 import styles from './style';
 import { Flex,  Stepper,  Switch } from '@ant-design/react-native';
 import InputBox from '../../../Form/Input';

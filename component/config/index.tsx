@@ -1,11 +1,11 @@
 //import liraries
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styles from './style';
-import BaseInfoBox from '../ModalBox/component/baseInfoBox';
 import { useModal } from '../../hook/modal';
 import { CanvasOption, CanvasType } from '../../hook/canvas';
 import { Icon } from '@ant-design/react-native';
-import ShapeBox from '../shapeBox';
+import BaseInfoBox from './component/baseInfoBox';
+import ShapeBox from './component/shapeBox';
 
 interface Props {
     option: CanvasOption,
@@ -40,6 +40,12 @@ const ConfigList: React.FC<Props> = ({ option }) => {
                         <Icon style={styles.icon} name="bars" />
                     </View>
                     <Text style={styles.text}>基础配置</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.box} onPressOut={() => baseModal.onShow()}>
+                    <View style={styles.iconbox}>
+                        <Icon style={styles.icon} name="bars" />
+                    </View>
+                    <Text style={styles.text}>边框</Text>
                 </TouchableOpacity>
             </ScrollView>
             <BaseInfoBox option={option} onSelect={onSelect} modal={baseModal} />

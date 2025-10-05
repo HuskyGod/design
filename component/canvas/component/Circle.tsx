@@ -11,7 +11,7 @@ const CircleItem: React.FC<{ option: CanvasType }> = ({ option }) => {
         width: option.size.width,
         height: option.size.height,
         color: option.color,
-        // r: option.size.r!,
+        r: option.round?.value,
 
     };
     return (

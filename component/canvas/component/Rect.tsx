@@ -9,7 +9,7 @@ const RectItem: React.FC<{ option: CanvasType }> = ({ option }) => {
         width: option.size.width,
         height: option.size.height,
         color: option.color,
-        r: option.round?.show ? option.round?.value : 0,
+        r: option.round?.value,
     };
     return (
         <RoundedRect {...propValue}>
