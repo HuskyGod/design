@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 
 // define your styles
 const styles = StyleSheet.create({
-    container: { width: '100%', height: 100 },
+    container: { width: '100%', minHeight: 80, paddingHorizontal: 20 },
     scroll: { width: '100%' },
-    box: { width: 100, height: 100, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' },
-    iconbox: { width: 20, height: 20, marginBottom: 10, alignItems: 'center', justifyContent: 'center'  },
+    box: { width: 80, height: 80, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' },
+    iconbox: { width: 20, height: 20, alignItems: 'center', justifyContent: 'center'  },
     icon: { color: '#000', fontSize: 20 },
     text: { fontSize: 12, fontWeight: 'bold', color: '#333' },
 });

@@ -18,6 +18,7 @@ export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (ty
         type: type,
         size: size,
         color: 'lightblue',
+        border: { value: 0, color: 'blue' },
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },
         round: { show: false, value: 0 },
         checkLocation (e: MoveEvent) {

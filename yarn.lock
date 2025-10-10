@@ -6718,6 +6718,11 @@ readable-stream@^3.4.0:
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
+reanimated-color-picker@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmmirror.com/reanimated-color-picker/-/reanimated-color-picker-4.1.1.tgz#5d5d56658e33f6bad8b1892bb2c7411fa894112c"
+  integrity sha512-WtjOj3KYkxaTjkKnlNV/DNcR9IXBQ9CUUtUMQXzRqvlbzwM3AdQ4YpJxchx4L6lpJnDZjEaGJLq/x0ZJ3MKxnA==
+
 recast@^0.20.3:
   version "0.20.5"
   resolved "https://registry.npmmirror.com/recast/-/recast-0.20.5.tgz#8e2c6c96827a1b339c634dd232957d230553ceae"
