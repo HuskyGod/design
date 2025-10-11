@@ -1,4 +1,3 @@
-import { configureProps } from 'react-native-reanimated/lib/typescript/ConfigHelper';
 import { CanvasType } from './canvas';
 import uuid from 'react-native-uuid';
 
@@ -20,7 +19,7 @@ export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (ty
         color: 'lightblue',
         border: { value: 0, color: 'blue' },
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },
-        round: { show: false, value: 0 },
+        round: { value: 0 },
         checkLocation (e: MoveEvent) {
             const optionCheck = checkLocation(e, this.bound);
             const pointCheck = checkPointRect(e, this).findIndex((value) => !!value);

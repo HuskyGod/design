@@ -9,6 +9,7 @@ import ShapeBox from './component/shapeBox';
 import BorderBox from './component/borderBox';
 import ColorBox from '../colorBox';
 import { useEffect, useState } from 'react';
+import RadiusBox from './component/radiusBox';
 
 interface Props {
     option: CanvasOption,
@@ -19,6 +20,7 @@ const ConfigList: React.FC<Props> = ({ option }) => {
     const baseModal = useModal();
     const shapeModal = useModal();
     const borderModal = useModal();
+    const radiusModal = useModal();
     const [showActiveConfig, onShow] = useState(false);
 
     const onSelect = (color: string) => {
@@ -30,6 +32,15 @@ const ConfigList: React.FC<Props> = ({ option }) => {
         option.addShapeElement(type!);
         shapeModal.onClose();
     };
+
+    const onlyRect = [
+        <TouchableOpacity key={'3'} style={styles.box} onPressOut={() => radiusModal.onTarget()}>
+            <View style={styles.iconbox}>
+                <Icon style={styles.icon} name="radius-setting" />
+            </View>
+            <Text style={styles.text}>圆角</Text>
+        </TouchableOpacity>,
+    ];
 
     const activeConfig = [
         <TouchableOpacity key={'1'} style={styles.box} onPressOut={() => baseModal.onShow()}>
@@ -46,19 +57,19 @@ const ConfigList: React.FC<Props> = ({ option }) => {
         </TouchableOpacity>,
     ];
 
-    console.log(option.activeObject);
-
     useEffect(() => {
         onShow(!!option.activeObject);
         if (!option.activeObject) {
             baseModal.onClose();
             borderModal.onClose();
+            radiusModal.onClose();
         }
-    }, [option.activeObject, baseModal, borderModal]);
+    }, [option.activeObject, baseModal, borderModal, radiusModal]);
 
     return (
         <View style={styles.container}>
             <BorderBox option={option} modal={borderModal} />
+            <RadiusBox option={option} modal={radiusModal} />
             <ScrollView horizontal style={styles.scroll}>
                 <TouchableOpacity style={styles.box} onPressOut={() => shapeModal.onShow()}>
                     <View style={styles.iconbox}>
@@ -67,6 +78,7 @@ const ConfigList: React.FC<Props> = ({ option }) => {
                     <Text style={styles.text}>图形</Text>
                 </TouchableOpacity>
                 {showActiveConfig ? (activeConfig) : null}
+                {option.activeObject?.type === 'rect' && onlyRect}
             </ScrollView>
             <BaseInfoBox option={option} onSelect={onSelect} modal={baseModal} />
             <ShapeBox option={option} modal={shapeModal} onSelect={onCreateShape} />
