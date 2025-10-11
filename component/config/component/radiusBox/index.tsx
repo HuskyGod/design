@@ -1,17 +1,15 @@
 import { CanvasOption } from '../../../../hook/canvas';
 import { useModal } from '../../../../hook/modal';
-import { Text, TouchableHighlight, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Flex, Stepper, StepperProps } from '@ant-design/react-native';
 import styles from './style';
-import ColorBox from '../../../colorBox';
-import { useState } from 'react';
 
-interface BorderBoxProp {
+interface BoxProp {
     modal: ReturnType<typeof useModal>,
     option: CanvasOption,
 }
 
-const RadiusBox: React.FC<BorderBoxProp> = ({ modal, option }) => {
+const RadiusBox: React.FC<BoxProp> = ({ modal, option }) => {
 
   const onChange: StepperProps['onChange'] = (value: number) => {
     option.setRound({ value });

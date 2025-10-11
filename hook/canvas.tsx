@@ -2,18 +2,19 @@ import React, { useMemo, useState } from 'react';
 import CanvasScreen from '../component/canvas';
 import { checkBound, checkPoint, createCanvasElement, getCanvaItemMoveInfo, getEvent, getPointRectComplex, MoveEvent } from './util';
 export type CanvasElementType = 'rect' | 'circle'
-export interface CanvasType {
-    active: boolean,
-    key: string,
-    type: CanvasElementType,
-    color: string,
-    size: { width: number, height: number, x?: number, y?: number, r?: number },
-    bound: { x1: number, x2: number, y1: number, y2: number }
-    round?: { value: number }
-    border?: { value: number, color: string }
-    checkLocation: (e: MoveEvent) => boolean
-    checkPointRect: (e: MoveEvent) => boolean[]
-}
+// export interface CanvasType {
+//     active: boolean,
+//     key: string,
+//     type: CanvasElementType,
+//     color: string,
+//     size: { width: number, height: number, x?: number, y?: number, r?: number },
+//     bound: { x1: number, x2: number, y1: number, y2: number }
+//     round?: { value: number }
+//     border?: { value: number, color: string }
+//     checkLocation: (e: MoveEvent) => boolean
+//     checkPointRect: (e: MoveEvent) => boolean[]
+// }
+export type CanvasType = ReturnType<typeof createCanvasElement>
 
 const createSizeOption = () => {
     return { width: 0, height: 0, x: 0, y: 0, r: 0 };
@@ -110,6 +111,15 @@ export const useCanvas = () => {
             };
         });
     };
+    // 设置边框
+    const setShadow = (option: CanvasType['shadow']) => {
+        setActiveOption((item) => {
+            return {
+                ...item,
+                shadow: option,
+            };
+        });
+    };
     // 添加画布对象
     const addShapeElement = (type: CanvasType['type']) => {
         setList((state) => {
@@ -154,6 +164,7 @@ export const useCanvas = () => {
         cleanInitLocation,
         setBaseInfo,
         addShapeElement,
+        setShadow,
     };
     return {
         element: <CanvasScreen active={activeObject} list={list} />,

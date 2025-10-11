@@ -1,10 +1,10 @@
 //import liraries
-import { Oval, Paint } from '@shopify/react-native-skia';
+import { Oval } from '@shopify/react-native-skia';
 import React from 'react';
 import { CanvasType } from '../../../hook/canvas';
 
 // create a component
-const CircleItem: React.FC<{ option: CanvasType }> = ({ option }) => {
+const CircleItem: React.FC<{ option: CanvasType, children: React.ReactNode }> = ({ option, children }) => {
     const propValue = {
         x: option.size.x,
         y: option.size.y,
@@ -18,7 +18,8 @@ const CircleItem: React.FC<{ option: CanvasType }> = ({ option }) => {
         <Oval
             {...propValue}
         >
-            <Paint color={option.border?.color} strokeWidth={option.border?.value} style="stroke" />
+            {children}
+            {/* <Paint color={option.border?.color} strokeWidth={option.border?.value} style="stroke" /> */}
         </Oval>
     );
 };

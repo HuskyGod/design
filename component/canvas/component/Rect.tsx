@@ -2,7 +2,7 @@ import { Paint, RoundedRect } from '@shopify/react-native-skia';
 import { CanvasType } from '../../../hook/canvas';
 
 // create a component
-const RectItem: React.FC<{ option: CanvasType }> = ({ option }) => {
+const RectItem: React.FC<{ option: CanvasType, children: React.ReactNode }> = ({ option, children }) => {
     const propValue = {
         x: option.size.x,
         y: option.size.y,
@@ -13,7 +13,8 @@ const RectItem: React.FC<{ option: CanvasType }> = ({ option }) => {
     };
     return (
         <RoundedRect {...propValue}>
-            <Paint color={option.border?.color} strokeWidth={option.border?.value} style="stroke" />
+            {children}
+            {/* <Paint color={option.border?.color} strokeWidth={option.border?.value} style="stroke" /> */}
         </RoundedRect>
     );
 };

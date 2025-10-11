@@ -1,4 +1,4 @@
-import { CanvasType } from './canvas';
+import { CanvasElementType, CanvasType } from './canvas';
 import uuid from 'react-native-uuid';
 
 export const rectSize = 10;
@@ -9,7 +9,7 @@ export interface MoveEvent {
     y: number
 }
 
-export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (type) => {
+export const createCanvasElement = (type: CanvasElementType) => {
     let size = { width: 100, height: 100, x: 0, y: 0, r: 50 };
     return {
         active: false,
@@ -20,6 +20,7 @@ export const createCanvasElement: (type: CanvasType['type']) => CanvasType = (ty
         border: { value: 0, color: 'blue' },
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },
         round: { value: 0 },
+        shadow: { dx: 0, dy: 0, blue: 0, color: 'red', inner: false },
         checkLocation (e: MoveEvent) {
             const optionCheck = checkLocation(e, this.bound);
             const pointCheck = checkPointRect(e, this).findIndex((value) => !!value);
