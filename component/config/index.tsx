@@ -8,6 +8,7 @@ import BaseInfoBox from './component/baseInfoBox';
 import ShapeBox from './component/shapeBox';
 import BorderBox from './component/borderBox';
 import ColorBox from '../colorBox';
+import { useEffect, useState } from 'react';
 
 interface Props {
     option: CanvasOption,
@@ -18,6 +19,7 @@ const ConfigList: React.FC<Props> = ({ option }) => {
     const baseModal = useModal();
     const shapeModal = useModal();
     const borderModal = useModal();
+    const [showActiveConfig, onShow] = useState(false);
 
     const onSelect = (color: string) => {
         option.setColor(color);
@@ -36,13 +38,23 @@ const ConfigList: React.FC<Props> = ({ option }) => {
             </View>
             <Text style={styles.text}>基础配置</Text>
         </TouchableOpacity>,
-        <TouchableOpacity key={'2'} style={styles.box} onPressOut={() => borderModal.onShow()}>
+        <TouchableOpacity key={'2'} style={styles.box} onPressOut={() => borderModal.onTarget()}>
             <View style={styles.iconbox}>
                 <Icon style={styles.icon} name="border-outer" />
             </View>
             <Text style={styles.text}>边框</Text>
         </TouchableOpacity>,
     ];
+
+    console.log(option.activeObject);
+
+    useEffect(() => {
+        onShow(!!option.activeObject);
+        if (!option.activeObject) {
+            baseModal.onClose();
+            borderModal.onClose();
+        }
+    }, [option.activeObject, baseModal, borderModal]);
 
     return (
         <View style={styles.container}>
@@ -54,7 +66,7 @@ const ConfigList: React.FC<Props> = ({ option }) => {
                     </View>
                     <Text style={styles.text}>图形</Text>
                 </TouchableOpacity>
-                {option.activeObject && (activeConfig)}
+                {showActiveConfig ? (activeConfig) : null}
             </ScrollView>
             <BaseInfoBox option={option} onSelect={onSelect} modal={baseModal} />
             <ShapeBox option={option} modal={shapeModal} onSelect={onCreateShape} />

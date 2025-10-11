@@ -24,6 +24,7 @@ const BorderBox: React.FC<BorderBoxProp> = ({ modal, option }) => {
   };
 
   if (!modal.open) {return null;}
+
   return (
     <Flex style={styles.box} align="center">
       <View><Text style={styles.title}>宽</Text></View>

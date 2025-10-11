@@ -1,6 +1,6 @@
 //import liraries
-import { Modal } from '@ant-design/react-native';
-import React, { useMemo, useState } from 'react';
+import { Button, Flex, Modal, WingBlank } from '@ant-design/react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useModal } from '../../hook/modal';
 import ColorPicker, { ColorPickerProps, OpacitySlider, Panel1, Panel3 } from 'reanimated-color-picker';
@@ -13,19 +13,20 @@ interface Props {
 
 // create a component
 const ColorBox: React.FC<Props> = ({ modal, onFinish, value }) => {
-    console.log(modal.open);
-    const [hexStr, setHex] = useState('');
+    const [hexStr, setHexStr] = useState('');
 
-    const onComplete: ColorPickerProps['onComplete'] = (color) => {
-        console.log('1111');
+    const onComplete: ColorPickerProps['onCompleteJS'] = ({ hex }) => {
+        setHexStr(hex);
     };
 
-    const footer = useMemo(() => [
-            { text: '取消', onPress: modal.onClose },
-            { text: '确认', onPress: () => onFinish(hexStr) },
-    ], [hexStr, onFinish, modal]);
+    const onConfig = useCallback(() => {
+        onFinish(hexStr);
+        modal.onClose();
+    }, [hexStr, onFinish, modal]);
 
-    console.log(hexStr);
+    useEffect(() => {
+        setHexStr(value!);
+    }, [value]);
 
     return (
        <Modal
@@ -36,13 +37,22 @@ const ColorBox: React.FC<Props> = ({ modal, onFinish, value }) => {
         maskClosable
         visible={modal.open}
         closable
-        footer={footer}
     >
-        <View style={{ padding: 20 }}>
-            <ColorPicker style={{ width: '100%' }} value={'red'} onComplete={onComplete}>
-                <Panel1 />
-                <OpacitySlider style={{ marginTop: 20, borderRadius: 20 }} />
-            </ColorPicker>
+        <View>
+            <View style={{ padding: 20 }}>
+                <ColorPicker style={{ width: '100%' }} value={value} onCompleteJS={onComplete}>
+                    <Panel3 />
+                    <OpacitySlider style={{ marginTop: 20, borderRadius: 20 }} />
+                </ColorPicker>
+            </View>
+            <Flex>
+                <Flex.Item>
+                    <Button onPressIn={modal.onClose}>取消</Button>
+                </Flex.Item>
+                <Flex.Item style={{ paddingLeft: 4 }}>
+                    <Button onPressIn={onConfig} type="primary">确认</Button>
+                </Flex.Item>
+            </Flex>
         </View>
     </Modal>
     );
