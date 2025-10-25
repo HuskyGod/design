@@ -31,8 +31,8 @@ const ConfigList: React.FC<Props> = ({ option }) => {
         baseModal.onClose();
     };
 
-    const onCreateShape = (type?: CanvasType['type']) => {
-        option.addShapeElement(type!);
+    const onCreateShape = (type?: CanvasType['type'], info?: CanvasType['extraInfo']) => {
+        option.addShapeElement(type!, info);
         shapeModal.onClose();
     };
 

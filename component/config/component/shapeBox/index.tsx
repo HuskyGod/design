@@ -1,35 +1,39 @@
 //import liraries
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useModal } from '../../../../hook/modal';
 import ModalBox from '../../../ModalBox/index';
 import { CanvasOption, CanvasType } from '../../../../hook/canvas';
 import styles from './style';
-import Svg, { Circle, Rect } from 'react-native-svg';
+import Svg, { Circle, Text as SvgText, Rect } from 'react-native-svg';
 import { Flex } from '@ant-design/react-native';
+import InputBox from '../../../Form/Input';
+import { extraInfoType } from '../../../../hook/util';
 // create a component
 interface ColorProp {
     modal: ReturnType<typeof useModal>,
     option: CanvasOption,
-    onSelect: (type?: CanvasType['type']) => void
+    onSelect: (type?: CanvasType['type'], info?: extraInfoType) => void
 }
 
 
 const ShapeBox: React.FC<ColorProp> = ({ modal, onSelect }) => {
 
-    const [shapeList, setShapeList] = useState<{ name: string, svg: React.ReactNode, label: string }[]>([]);
+    const [shapeList, setShapeList] = useState<{ name: CanvasType['type'], svg: React.ReactNode, label: string }[]>([]);
+    const [input, setInput] = useState('');
 
     const [shape, setShape] = useState<{ name: CanvasType['type'], svg: React.ReactNode, label: string } | null>(null);
 
     const onFinish = useCallback(() => {
-        onSelect(shape?.name);
+        onSelect(shape?.name, { text: input });
         modal.onClose();
-    }, [modal, onSelect, shape]);
+    }, [modal, onSelect, input, shape]);
 
     const onInit = async () => {
         setShapeList([
-            { name: 'rect', svg: await <Rect width={100} height={100} fill={'#666'} />, label: '矩形' },
-            { name: 'circle', svg: await <Circle cx={50} cy={50} r={50} fill={'#666'} />, label: '圆形' },
+            { name: 'rect', svg: <Rect width={100} height={100} fill={'#666'} />, label: '矩形' },
+            { name: 'circle', svg: <Circle cx={50} cy={50} r={50} fill={'#666'} />, label: '圆形' },
+            { name: 'text', svg: <SvgText x={50} y={55} textAnchor="middle" fontWeight="bold" fill="#666" fontSize="25">TextFont</SvgText>, label: '文本' },
         ]);
     };
 
@@ -43,7 +47,7 @@ const ShapeBox: React.FC<ColorProp> = ({ modal, onSelect }) => {
             visible={modal.open}
             onFinish={onFinish}
         >
-            {/* 颜色 */}
+            {/* 基本形状 */}
             <View style={styles.titleBox}><Text style={styles.title}>基本形状</Text></View>
             <Flex wrap="wrap" justify="between">
                 {shapeList.map(item => (
@@ -57,6 +61,12 @@ const ShapeBox: React.FC<ColorProp> = ({ modal, onSelect }) => {
                     </TouchableOpacity>
                 ))}
             </Flex>
+            {shape?.name === 'text' && (
+                <>
+                    <View style={styles.titleBox}><Text style={styles.title}>文本</Text></View>
+                    <InputBox value={input} placeholder="请输入文案" onChangeInput={(value) => setInput(value)} />
+                </>
+            )}
         </ModalBox>
     );
 };

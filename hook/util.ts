@@ -9,7 +9,11 @@ export interface MoveEvent {
     y: number
 }
 
-export const createCanvasElement = (type: CanvasElementType) => {
+export interface extraInfoType {
+    text?: string
+}
+
+export const createCanvasElement = (type: CanvasElementType, info?: extraInfoType) => {
     let size = { width: 100, height: 100, x: 0, y: 0, r: 50 };
     return {
         active: false,
@@ -21,6 +25,7 @@ export const createCanvasElement = (type: CanvasElementType) => {
         bound: { x1: 0, x2: 100, y1: 0, y2: 100 },
         round: { value: 0 },
         shadow: { dx: 0, dy: 0, blue: 0, color: 'red', inner: false },
+        extraInfo: info,
         checkLocation (e: MoveEvent) {
             const optionCheck = checkLocation(e, this.bound);
             const pointCheck = checkPointRect(e, this).findIndex((value) => !!value);

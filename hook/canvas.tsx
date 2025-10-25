@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import CanvasScreen from '../component/canvas';
 import { checkBound, checkPoint, createCanvasElement, getCanvaItemMoveInfo, getEvent, getPointRectComplex, MoveEvent } from './util';
-export type CanvasElementType = 'rect' | 'circle'
+export type CanvasElementType = 'rect' | 'circle' | 'text'
 // export interface CanvasType {
 //     active: boolean,
 //     key: string,
@@ -121,9 +121,9 @@ export const useCanvas = () => {
         });
     };
     // 添加画布对象
-    const addShapeElement = (type: CanvasType['type']) => {
+    const addShapeElement = (type: CanvasType['type'], info?: CanvasType['extraInfo']) => {
         setList((state) => {
-            return ([] as CanvasType[]).concat([createCanvasElement(type)], state);
+            return ([] as CanvasType[]).concat([createCanvasElement(type, info)], state);
         });
     };
     // 判断是否选中四个角

@@ -1,22 +1,25 @@
 //import liraries
 
 import { Group, Paint, Shadow } from '@shopify/react-native-skia';
-import { CanvasType } from '../../hook/canvas';
+import { CanvasElementType, CanvasType } from '../../hook/canvas';
 import RectItem from './component/Rect';
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import context from '../gesture/context';
 import CircleItem from './component/Circle';
+import TextItem from './component/Text';
 
 const getItemType = (option: CanvasType) => {
-    return {
+    const component: Record<CanvasElementType, any> = {
         'rect': RectItem,
         'circle': CircleItem,
-    }[option.type];
+        'text': TextItem,
+    };
+    return component[option.type];
 };
 
 // create a component
 const ItemBox: React.FC<{ option: CanvasType }> = ({ option }) => {
-    const Component = getItemType(option);
+    const Component = getItemType(option)!;
     return (
         <Group>
             <Component option={option}>
@@ -30,8 +33,6 @@ const ItemBox: React.FC<{ option: CanvasType }> = ({ option }) => {
                         inner={option.shadow?.inner}
                     /> : null}
             </Component>
-            {/* {option.type === 'rect' && <RectItem option={option} />} */}
-            {/* {option.type === 'circle' && <CircleItem option={option} />} */}
         </Group>
     );
 };
